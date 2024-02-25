@@ -1,0 +1,23 @@
+﻿@model IEnumerable<IoTBay.web.Models.Entities.Product>
+
+<h2>Products</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var product in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => product.Id)</td>
+            <td>@Html.DisplayFor(modelItem => product.Name)</td>
+            <td>@Html.DisplayFor(modelItem => product.Price)</td>
+            
+        </tr>
+}
+    </tbody>
+</table>
