@@ -48,11 +48,37 @@ public class HomeController : Controller
         }
         return View();
     }
-    
+
+
     // GET: Products/Create
     public IActionResult Create()
     {
         return View();
     }
 
+    // GET: Users/Register
+    public IActionResult Register()
+        {
+            return View();
+        }
+        
+    // GET: Users/Register
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult>  Register([Bind("Id,Username,Password")] Usr user){
+        if (ModelState.IsValid)
+        {
+            var existingUser = await _context.Usrs.FirstOrDefaultAsync(u => u.Username == user.Username);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Username", "Username is already taken.");
+                return View(user);
+                
+            }
+            _context.Add(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        return View(user);
+    }
 }
