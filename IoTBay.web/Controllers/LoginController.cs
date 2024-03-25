@@ -9,9 +9,9 @@ namespace IoTBay.web.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDBContext _context;
 
-        public LoginController(ApplicationDbContext context)
+        public LoginController(ApplicationDBContext context)
         {
             _context = context;
         }
