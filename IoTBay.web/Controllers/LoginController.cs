@@ -29,7 +29,7 @@ namespace IoTBay.web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+                var user = _context.Usr.FirstOrDefault(u => u.Email == model.Email);
 
                 if (user != null)
                 {
