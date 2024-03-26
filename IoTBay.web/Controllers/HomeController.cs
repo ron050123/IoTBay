@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using IoTBay.web.Models;
 using IoTBay.web.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace IoTBay.web.Controllers;
 
@@ -53,6 +54,54 @@ public class HomeController : Controller
     public IActionResult Create()
     {
         return View();
+    }
+
+    public IActionResult Login()
+    {
+        return View();
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Login(Usr model)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = _context.Usrs.FirstOrDefault(u => u.Email == model.Email);
+
+            if (user != null)
+            {
+                if (user.Password == model.Password)
+                {
+                    Console.Write("Login  successfull");
+                }
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid email or password.");
+        }
+
+        // If model state is not valid, return the view with the model
+        return View(model);
+    }
+
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View("~/Views/Home/Register.cshtml");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(Usr user)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Add(user);
+            await _context.SaveChangesAsync();
+            return Content("User registered successfully!");
+        }
+        else
+        {
+            return View("~/Views/Home/Register.cshtml", user);
+        }
     }
 
 }
