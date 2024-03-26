@@ -72,7 +72,7 @@ public class HomeController : Controller
             {
                 if (user.Password == model.Password)
                 {
-                    Console.Write("Login  successfull");
+                    Console.Write("Login successful");
                 }
             }
 
