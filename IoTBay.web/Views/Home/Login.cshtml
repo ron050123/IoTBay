@@ -49,14 +49,19 @@ input[type="submit"]:hover {
 </style>
 
     <h1>Welcome Back!</h1>
-    <form asp-action="Login" method="post">
-            <div>
-                <label asp-for="Email">Email:</label>
-                <input asp-for="Email" />
-            </div>
-            <div>
-                <label asp-for="Password">Password:</label>
-                <input asp-for="Password" type="password" />
-            </div>
-            <button type="submit">Login</button>
-    </form>
+<form asp-action="Login" method="post">
+    <div>
+        <label asp-for="Email">Email:</label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label asp-for="Password">Password:</label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <button type="submit">Login</button>
+</form>
+
+<div style = "text-align: center; margin-top:  20px;">
+    <label>Don't have an account?</label><br />
+    <a asp-action="Register" class="btn btn-link">Sign Up</a>
+</div>

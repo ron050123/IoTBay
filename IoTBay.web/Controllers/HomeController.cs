@@ -23,7 +23,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var products = await _context.Products.ToListAsync(); 
-        return View(products);
+        return RedirectToAction(nameof(Login));
     }
 
     public IActionResult Privacy()
