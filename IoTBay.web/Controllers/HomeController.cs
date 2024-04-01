@@ -5,6 +5,9 @@ using IoTBay.web.Models;
 using IoTBay.web.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IoTBay.web.Controllers;
 
@@ -19,7 +22,8 @@ public class HomeController : Controller
         _logger = logger;
         _context = context;
     }
-
+    
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         var products = await _context.Products.ToListAsync(); 
@@ -62,22 +66,31 @@ public class HomeController : Controller
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Login(Usr model)
+    public async Task<IActionResult> Login(Usr model)
     {
         if (ModelState.IsValid)
         {
-            var user = _context.Usrs.FirstOrDefault(u => u.Email == model.Email);
-
+            var user = _context.Usrs.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+            
             if (user != null)
             {
-                if (user.Password == model.Password)
+                var claims = new List<Claim>
                 {
-                    Console.Write("Login successful");
-                }
+                    new Claim(ClaimTypes.Email, model.Email),
+                    new Claim("Id", user.Id.ToString()) // Storing user ID
+                };
+
+                var identity = new ClaimsIdentity(claims, "CookieAuth");
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync("CookieAuth", principal);
+
+                return RedirectToAction("Index");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid email or password.");
         }
+
 
         // If model state is not valid, return the view with the model
         return View(model);
@@ -96,12 +109,19 @@ public class HomeController : Controller
         {
             _context.Add(user);
             await _context.SaveChangesAsync();
-            return Content("User registered successfully!");
+            return View("RegistrationSuccess");
         }
         else
         {
             return View("~/Views/Home/Register.cshtml", user);
         }
+    }
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync("CookieAuth");
+        return RedirectToAction("Login");
     }
 
 }

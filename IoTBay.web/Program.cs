@@ -9,6 +9,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("IotBay")));
 
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", config =>
+    {
+        config.Cookie.Name = "UserLoginCookie";
+        config.LoginPath = "/Home/Login";
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
