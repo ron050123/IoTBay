@@ -76,7 +76,6 @@ public class HomeController : Controller
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Email, model.Email),
                     new Claim("Id", user.Id.ToString()) // Storing user ID
                 };
 
