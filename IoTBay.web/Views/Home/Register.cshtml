@@ -72,11 +72,45 @@ button[type="submit"]:hover {
         <div class="form-group">
             <label asp-for="Password" class="control-label"></label>
             <input asp-for="Password" class="form-control" type="password" step="0.01"/>
-            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group" style="margin-top: -10px;">
+            <span id="passwordError" class="text-danger" style="margin-top: 5px; margin-bottom: 0;"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary">Register</button>
-                <br/>
-                <h2>Already a Member? Please click <a href="login">here!</a></h2>
+        <button type="submit" class="btn btn-primary" style="margin-top: 10px">Register</button>
+        <br/>
+        <h2>Already a Member? Please click <a href="login">here!</a></h2>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function validatePassword(password) {
+            const regexPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,30}$/;
+            return regexPattern.test(password);
+        }
+
+        function toggleRegisterButton() {
+            const passwordInput = document.getElementById("Password");
+            const registerButton = document.querySelector('button[type="submit"]');
+            const passwordError = document.querySelector('#passwordError');
+          
+            if (validatePassword(passwordInput.value)) {
+                registerButton.disabled = false;
+                passwordError.textContent = "";
+            } else {
+                registerButton.disabled = true;
+                passwordError.textContent = "Password must contain uppercase letter, lowercase letter, and number.";
+            }
+        }
+        const passwordInput = document.getElementById("Password");
+        if (passwordInput) {
+            passwordInput.addEventListener("input", toggleRegisterButton);
+        } else {
+            console.error("Password input field not found.");
+        }
+
+        toggleRegisterButton();
+        });
+        
+</script>
