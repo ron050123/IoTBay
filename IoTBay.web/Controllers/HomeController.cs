@@ -22,8 +22,6 @@ public class HomeController : Controller
         _logger = logger;
         _context = context;
     }
-    
-    [Authorize]
     public async Task<IActionResult> Index()
     {
         var products = await _context.Products.ToListAsync(); 
@@ -68,15 +66,13 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(Usr model)
     {
-        if (ModelState.IsValid)
-        {
             var user = _context.Usrs.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
             
             if (user != null)
             {
                 var claims = new List<Claim>
                 {
-                    new Claim("Id", user.Id.ToString()) // Storing user ID
+                    new Claim("Id", user.UserId.ToString()) // Storing user ID
                 };
 
                 var identity = new ClaimsIdentity(claims, "CookieAuth");
@@ -88,10 +84,7 @@ public class HomeController : Controller
             }
 
             ModelState.AddModelError(string.Empty, "Invalid email or password.");
-        }
-
-
-        // If model state is not valid, return the view with the model
+        
         return View(model);
     }
 
@@ -102,15 +95,21 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(Usr user)
+    public async Task<IActionResult> Register(Usr model)
     {
-        if (ModelState.IsValid)
+        var user = new Usr
+        {
+            Email = model.Email,
+            Password = model.Password,
+            Role = "Customer",
+        };
+        try
         {
             _context.Add(user);
             await _context.SaveChangesAsync();
             return View("RegistrationSuccess");
         }
-        else
+        catch(Exception ex)
         {
             return View("~/Views/Home/Register.cshtml", user);
         }
