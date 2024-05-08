@@ -6,6 +6,10 @@
     <title>@ViewData["Title"] - IoTBay.web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -20,11 +24,19 @@
                 </button>
 
                 <div class="collapse navbar-collapse flex justify-content-between" id="navbarNav">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                    </ul>
+                    <div style="display: inline-flex">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Catalogue" asp-action="Index">Catalogue</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
                     @if (User.Identity.IsAuthenticated)
                     {
                         <ul class="navbar-nav">
@@ -52,6 +64,13 @@
     </main>
 </div>
 
+<style>
+    .modal-dialog {
+        margin-top: 100px; 
+        
+        
+    }
+</style>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

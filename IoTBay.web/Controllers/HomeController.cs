@@ -24,8 +24,7 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        var products = await _context.Products.ToListAsync(); 
-        return View(products);
+        return View();
     }
 
     public IActionResult Privacy()
@@ -72,7 +71,9 @@ public class HomeController : Controller
             {
                 var claims = new List<Claim>
                 {
-                    new Claim("Id", user.UserId.ToString()) // Storing user ID
+                    new Claim("Id", user.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role.ToString())
+
                 };
 
                 var identity = new ClaimsIdentity(claims, "CookieAuth");
