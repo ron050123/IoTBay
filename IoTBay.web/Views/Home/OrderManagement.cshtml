@@ -1,0 +1,29 @@
+@model IoTBay.web.Models.Entities.Usr
+@model IoTBay.web.Models.Entities.Products
+
+<!DOCTYPE html>
+
+@{
+    var userId = User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
+}
+
+<style>
+    .order-container {
+        
+    }
+
+</style>
+
+<header>
+    <title>
+        Order Management
+    </title>
+</header>
+
+<body>
+    <div class="order-container">
+        <form>
+            <label>user is @userId</label>
+        </form>
+    </div>
+</body>
