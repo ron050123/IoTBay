@@ -3,80 +3,110 @@
 @{
     ViewData["Title"] = "Register";
 }
+
 <style>
     .login-container {
-    margin: 180px auto;
-    max-width: 500px;
-    background-color: #fff;
-    padding: 30px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-}
-
-h1{
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 30px;
-}
-
-h2{
-    text-align: center;
-    font-size: 15px ;
-    margin-bottom: 10px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-
-input[type="email"], input[type="password"] {
-    padding: 10px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-}
-
-button[type="submit"] {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 18px;
-    background-color: #007bff;
-}
-
-button[type="submit"]:hover {
-    background-color: #0062cc;
-}
+        margin: 180px auto;
+        max-width: 500px;
+        background-color: #fff;
+        padding: 30px;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+        text-align: center;
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    h2 {
+        text-align: center;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    input[type="email"], input[type="password"], input[type="text"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+    }
+    button[type="submit"] {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 18px;
+        background-color: #007bff;
+        margin-top: 20px;
+    }
+    button[type="submit"]:hover {
+        background-color: #0062cc;
+    }
+    
+    
 </style>
-
-
+ 
 <div class="login-container">
     <h1>Register</h1>
     <form asp-action="Register" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <!--<a href="/">toa dd full name from the requirements</a> -->
+        
+        <div class="form-group">
+            <label asp-for="FullName" class="control-label"></label>
+            <input asp-for="FullName" class="form-control" placeholder="Enter Full Name" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
 
         <div class="form-group">
             <label asp-for="Email" class="control-label"></label>
-            <input asp-for="Email" class="form-control" />
+            <input asp-for="Email" class="form-control" type="email" placeholder="Enter Email Address" required/>
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
+        
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="control-label"></label>
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Enter Phone Number"/>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span></div>
 
         <div class="form-group">
             <label asp-for="Password" class="control-label"></label>
-            <input asp-for="Password" class="form-control" type="password" step="0.01"/>
+            <input asp-for="Password" class="form-control" type="password" step="0.01" placeholder="Enter Password"/>
             <span asp-validation-for="Password" class="text-danger"></span>
+            <small class="form-text text-muted">Password must contain at least 8 characters and include at least 1 uppercase, 1 symbol, and 1 number.</small>
         </div>
 
+
         <button type="submit" class="btn btn-primary">Register</button>
-                <br/>
-                <h2>Already a Member? Please click <a href="login">here!</a></h2>
+        <br/>
+        <h2>Already a Member? Please click <a href="login">here!</a></h2>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const emailInput = document.getElementById("Email");
+        const passwordInput = document.getElementById("Password");
+        const registerButton = document.querySelector('button[type="submit"]');
+
+        function validateInputs() {
+            const emailValid = emailInput.value.trim() !== '';
+            const passwordValid = passwordInput.value.trim() !== '' && /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/.test(passwordInput.value);
+            //regex pattern used and i disabled the button unless all requirements are fulfilled
+            registerButton.disabled = !(emailValid && passwordValid);
+        }
+
+        emailInput.addEventListener("input", validateInputs);
+        passwordInput.addEventListener("input", validateInputs);
+
+        validateInputs(); 
+    });
+</script>

@@ -8,6 +8,8 @@ public class ApplicationDBContext : DbContext
     public DbSet<Product> Products { get; set; }
     
     public DbSet<Usr> Usrs { get; set; }
+    
+    public DbSet<AccessLog> AccessLogs { get; set; }
 
     
     public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
@@ -17,7 +19,6 @@ public class ApplicationDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Only call the base method if no options have been configured yet
         if (!optionsBuilder.IsConfigured)
         {
             optionsBuilder.UseSqlite("Data Source=IotBayDatabase.db");

@@ -27,10 +27,24 @@
                     </ul>
                     @if (User.Identity.IsAuthenticated)
                     {
+                        //I Added new navbar for LogHistory and EditProfile
                         <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="EditProfile">EditProfile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="LogHistory">LogHistory</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="confirmDeactivation();">Deactivate Account</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Porifle">Profile</a>
+                            </li>
+                            
                         </ul>
                     }
                     else
@@ -52,6 +66,14 @@
     </main>
 </div>
 
+
+<script>
+function confirmDeactivation() {
+    if (confirm('Are you sure to deactivate your account?')) {
+        window.location.href = '@Url.Action("DeactivateAcc", "Home")';
+    }
+}
+</script>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

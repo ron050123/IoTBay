@@ -60,6 +60,9 @@ button[type="submit"]:hover {
 <div class="login-container">
     <h1>Welcome Back!</h1>
     <form asp-action="Login" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        
         <label asp-for="Email">Email Address:</label>
         <input asp-for="Email" type="email" placeholder="Enter Email Address"/>
 

@@ -1,0 +1,54 @@
+@model IEnumerable<IoTBay.web.Models.Entities.AccessLog>
+
+@{
+    ViewData["Title"] = "Login History";
+}
+
+<style>
+    .history-container
+    {
+    margin: 180px auto;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    }
+    table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    }
+    th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    }
+    th {
+    background-color: #f8f9fa;
+    }
+    td {
+    background-color: #ffffff;
+    }
+    
+</style>
+
+<div class="history-container">
+    <h1>Your History Login</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Login Time</th>
+            <th>Logout Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach(var log in Model)
+            {
+                <tr>
+                    <td>@log.LoginTime</td>
+                    <td>@log.LogoutTime.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

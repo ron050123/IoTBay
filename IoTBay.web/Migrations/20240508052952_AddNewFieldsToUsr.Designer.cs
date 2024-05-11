@@ -3,6 +3,7 @@ using System;
 using IoTBay.web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,34 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IoTBay.web.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240508052952_AddNewFieldsToUsr")]
+    partial class AddNewFieldsToUsr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0-preview.1.24081.2");
-
-            modelBuilder.Entity("IoTBay.web.Models.Entities.AccessLog", b =>
-                {
-                    b.Property<int>("LogId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("LoginTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("LogoutTime")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("LogId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AccessLogs");
-                });
 
             modelBuilder.Entity("IoTBay.web.Models.Entities.Order", b =>
                 {
@@ -182,17 +163,6 @@ namespace IoTBay.web.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Usrs");
-                });
-
-            modelBuilder.Entity("IoTBay.web.Models.Entities.AccessLog", b =>
-                {
-                    b.HasOne("IoTBay.web.Models.Entities.Usr", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IoTBay.web.Models.Entities.Order", b =>
