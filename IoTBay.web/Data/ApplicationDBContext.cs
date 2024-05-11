@@ -26,7 +26,7 @@ namespace IoTBay.web.Data
                 .OnDelete(DeleteBehavior.Cascade); // Adjust delete behavior as needed
 
             modelBuilder.Entity<Order>()
-                .HasOne(o => o.User)
+                .HasOne(o => o.UserId)
                 .WithMany()
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Cascade); // Adjust delete behavior as needed
