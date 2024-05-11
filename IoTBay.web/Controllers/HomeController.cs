@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace IoTBay.web.Controllers;
 
@@ -122,5 +123,30 @@ public class HomeController : Controller
         await HttpContext.SignOutAsync("CookieAuth");
         return RedirectToAction("Login");
     }
+
+    [Authorize]
+        [HttpGet]
+        public IActionResult OrderManagement()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OrderManagement(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                // Associate the order with the logged-in user
+                var userId = User.FindFirstValue("Id");
+                order.UserId = userId;
+
+                _context.Orders.Add(order);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index.cshtml"); // Redirect to a relevant page after order submission
+            }
+            return View(order);
+        }
 
 }

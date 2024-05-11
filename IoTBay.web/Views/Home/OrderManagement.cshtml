@@ -1,29 +1,27 @@
-@model IoTBay.web.Models.Entities.Usr
-@model IoTBay.web.Models.Entities.Products
-
+@model IoTBay.web.Models.Entities.Product
 <!DOCTYPE html>
 
-@{
-    var userId = User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
-}
-
-<style>
-    .order-container {
-        
-    }
-
-</style>
-
-<header>
-    <title>
-        Order Management
-    </title>
-</header>
-
+<html>
+<head>
+    <title>Order Management</title>
+    <style>
+        .order-container {
+            margin: 20px;
+        }
+    </style>
+</head>
 <body>
     <div class="order-container">
-        <form>
-            <label>user is @userId</label>
+        <h1>Order Management</h1>
+        <form action="/Order/Submit" method="post">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="productName" required>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+
+            <input type="submit" value="Submit Order">
         </form>
     </div>
 </body>
+</html>
