@@ -20,7 +20,7 @@
         </div>
         <input type="range" class="custom-range" id="priceSlider" min="10" max="500" value="500">
     </div>
-    @if (User.IsInRole("Admin"))
+    @if (User.IsInRole("Admin")|| User.IsInRole("Staff"))
     {
         <div class="ml-auto">
 

@@ -24,7 +24,7 @@
         {
             <div style="padding-left: 0px" class="col-4 mb-4 ">
                 <div class="card h-100 card-fixed-height">
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
                     {
                         <div style="padding: 20px">
                             
