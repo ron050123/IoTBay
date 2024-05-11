@@ -1,0 +1,141 @@
+﻿@model IoTBay.web.Models.Entities.Usr
+
+@{
+	ViewData["Title"] = string.IsNullOrEmpty(Model.Role) ? "Create User" : "Edit User";
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+	<link href="~/css/modal.css" rel="stylesheet" />
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<br />
+<br />
+<h1 style="text-align: center; display: flex; justify-content: space-between;">
+	@ViewData["Title"]
+</h1>
+<br />
+<div id="editModal">
+	<form id="editForm">
+		<input type="hidden" asp-for="UserId" />
+		<div class="row">
+			<div class="col-md-2">
+				<div class="form-group">
+					<label for="Name"><b>Name:</b></label>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<input type="text" class="form-control" asp-for="Name" />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="form-group">
+					<label for="Phone"><b>Phone:</b></label>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<input type="number" class="form-control" asp-for="Phone" />
+					<span asp-validation-for="Phone" class="text-danger"></span>
+				</div>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-md-2">
+				<div class="form-group">
+					<label for="Email"><b>Email:</b></label>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<input type="email" class="form-control" asp-for="Email" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="col-md-2">
+				<div class="form-group">
+					<label for="Password"><b>Password:</b></label>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<input type="text" class="form-control" asp-for="Password" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-md-2">
+				<div class="form-group">
+					<label for="Role"><b>Role:</b></label>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<select asp-for="Role" class="form-control">
+						<option value="Customer">Customer</option>
+						<option value="Staff">Staff</option>
+						<option value="Admin">Admin</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="form-group">
+					<label for="Role"><b>Status:</b></label>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<select asp-for="IsActive" class="form-control">
+						<option value=true>Active</option>
+						<option value=false>InActive</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<button type="button" onclick="saveChanges()" class="btn btn-primary float-end">Save</button>
+	</form>
+</div>
+
+<script>
+	function saveChanges() {
+		// Gather form data
+
+		var formData = {
+			Name: $('#Name').val(),
+			Role: $('#Role').val(),
+			Email: $('#Email').val(),
+			Password: $('#Password').val(),
+			Phone: $('#Phone').val(),
+			UserId: $('#UserId').val(),
+			Status: $('#Status').val()
+		};
+
+		// Send AJAX request
+		$.ajax({
+			url: '/User/SaveChanges', // Update with your controller and action names
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(formData),
+			success: function (data) {
+				// Handle success response
+				console.log(data);
+				alert(data);
+				// Reload the main ticket page
+				window.open('@Url.Action("Index", "User")', "_self")
+			},
+			error: function (error) {
+				// Handle error response
+				console.error(error);
+				alert(error.responseText);
+			}
+		});
+	}
+</script>
