@@ -101,8 +101,11 @@ public class HomeController : Controller
         var user = new Usr
         {
             Email = model.Email,
+            Phone = model.Phone,
+            Name=model.Name,
             Password = model.Password,
             Role = "Customer",
+            Status="Active"
         };
         try
         {

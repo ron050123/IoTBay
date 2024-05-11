@@ -1,80 +1,86 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - IoTBay.web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - IoTBay.web</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 
 </head>
 <body>
 
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <!-- Brand -->
-                <a class="navbar-brand" href="#">IoTBay.web</a>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-fluid">
+				<!-- Brand -->
+				<a class="navbar-brand" href="#">IoTBay.web</a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-                <div class="collapse navbar-collapse flex justify-content-between" id="navbarNav">
-                    <div style="display: inline-flex">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Catalogue" asp-action="Index">Catalogue</a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                            </li>
-                        </ul>
-                    }
-                    else
-                    {
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                            </li>
-                        </ul>
-                    }
-                </div>
-            </div>
-        </nav>
-    </header>
+				<div class="collapse navbar-collapse flex justify-content-between" id="navbarNav">
+					<div style="display: inline-flex">
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							</li>
+						</ul>
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Catalogue" asp-action="Index">Catalogue</a>
+							</li>
+						</ul>
+						@if (User.IsInRole("Admin"))
+						{
+							<ul class="navbar-nav mr-auto">
+								<li class="nav-item">
+									<a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+								</li>
+							</ul>
+						}
+					</div>
 
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
+					@if (User.Identity.IsAuthenticated)
+					{
+						<ul class="navbar-nav">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+							</li>
+						</ul>
+					}
+					else
+					{
+						<ul class="navbar-nav">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+							</li>
+						</ul>
+					}
+				</div>
+			</div>
+		</nav>
+	</header>
 
-<style>
-    .modal-dialog {
-        margin-top: 100px; 
-        
-        
-    }
-</style>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+	<style>
+		.modal-dialog {
+			margin-top: 100px;
+		}
+	</style>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

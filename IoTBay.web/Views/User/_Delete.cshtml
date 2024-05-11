@@ -1,0 +1,58 @@
+﻿<!-- Delete User Modal -->
+<div id="deleteModal" class="modal" style="max-height: 50vh; overflow-y: auto;">
+	<div class="modal-content">
+		<span class="close" onclick="closeDeleteModal()">&times;</span>
+		<div class="modal-header bg-danger text-white">
+			<h3 class="modal-title">Delete User</h3>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to delete this user?</p>
+			<input type="hidden" id="deleteUserId" name="deleteUserId" />
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-danger" onclick="deleteUser()">Delete</button>
+			<button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+		</div>
+	</div>
+</div>
+
+<script>
+	// Open delete modal function
+	function openDeleteModal(userId) {
+		// Set the user ID in a hidden input field
+		$('#deleteUserId').val(userId);
+		// Display the delete modal
+		$('#deleteModal').css('display', 'block');
+	}
+
+	// Close delete modal function
+	function closeDeleteModal() {
+		$('#deleteModal').css('display', 'none');
+	}
+
+	// Delete user function
+	function deleteUser() {
+		// Get the user ID from the hidden input field
+		var userId = $('#deleteUserId').val();
+
+		// Send AJAX request to delete the user
+		$.ajax({
+			url: '/User/Delete/' + userId,
+			type: 'POST',
+			success: function (data) {
+				// Handle success response
+				console.log(data);
+				alert(data);
+				// Close the delete modal
+				closeDeleteModal();
+				// Reload the page
+				location.reload();
+			},
+			error: function (error) {
+				// Handle error response
+				console.error(error);
+				alert(error.responseText);
+			}
+		});
+	}
+</script>

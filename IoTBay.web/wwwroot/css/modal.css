@@ -1,0 +1,27 @@
+﻿.modal {
+    display: none; /* Hide the modal by default */
+    position: fixed; /* Position the modal */
+    top: 50%; /* Place the top of the modal at the vertical center of the viewport */
+    left: 50%; /* Place the left side of the modal at the horizontal center of the viewport */
+    transform: translate(-50%, -50%); /* Translate the modal to center it perfectly */
+    z-index: 1; /* Ensure the modal appears above other elements */
+    width: 60%; /* Set the width of the modal */
+    max-width: 600px; /* Set the maximum width of the modal */
+    background-color: white; /* Set the background color of the modal */
+    border: 1px solid #ccc; /* Add a border around the modal */
+    border-radius: 5px; /* Add rounded corners to the modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to the modal */
+    padding: 20px; /* Add padding inside the modal */
+    overflow: auto; /* Allow scrolling if content exceeds modal height */
+}
+
+.modal-content {
+    width: 100%; /* Set the width of the modal content */
+}
+
+.close {
+    position: absolute; /* Position the close button */
+    top: 10px; /* Place the close button 10px from the top of the modal */
+    right: 10px; /* Place the close button 10px from the right side of the modal */
+    cursor: pointer; /* Add pointer cursor to indicate clickable element */
+}
