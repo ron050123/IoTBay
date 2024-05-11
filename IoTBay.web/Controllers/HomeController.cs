@@ -65,7 +65,7 @@ public class HomeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(Usr model)
     {
-            var user = _context.Usrs.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+            var user = _context.Usrs.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password && u.IsActive == true);
             
             if (user != null)
             {
@@ -103,6 +103,11 @@ public class HomeController : Controller
             Email = model.Email,
             Password = model.Password,
             Role = "Customer",
+            Phone = "",
+            Name = "",
+            Address = "",
+            Type = "",
+            IsActive = true
         };
         try
         {
