@@ -60,7 +60,6 @@ public class UserController : Controller
 				existingUser.Email = user.Email;
 				existingUser.Password = user.Password;
 				existingUser.Role = user.Role;
-				existingUser.Status = user.Status;
 
 				// Attempt to update the user
 				_context.Usrs.Update(existingUser);

@@ -140,9 +140,10 @@ namespace IoTBay.web.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
-
+                    
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -159,7 +160,11 @@ namespace IoTBay.web.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Type")
+
+                    b.Property<string>("Type");
+
+                    b.Property<string>("Status")
+
                         .IsRequired()
                         .HasColumnType("TEXT");
 

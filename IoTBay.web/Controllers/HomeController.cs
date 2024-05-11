@@ -105,15 +105,11 @@ public class HomeController : Controller
             Name=model.Name,
             Password = model.Password,
             Role = "Customer",
-<<<<<<< Updated upstream
-            Phone = "",
-            Name = "",
             Address = "",
             Type = "",
             IsActive = true
-=======
-            Status="Active"
->>>>>>> Stashed changes
+            
+
         };
         try
         {
