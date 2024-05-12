@@ -33,20 +33,19 @@
                     <th>Product ID</th>
                     <th>Product Name</th>
                     <th>Quantity</th>
-                    <th>Delivery Address</th>
                     <th>Order Date</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Model)
+                @foreach (var Order in Model)
                 {
                     <tr>
-                        <td>@order.OrderId</td>
-                        <td>@order.UserId</td>
-                        <td>@order.ProductId</td>
-                        <td>@order.ProductName</td>
-                        <td>@order.Quantity</td>
-                        <td>@order.OrderDate</td>
+                        <td>@Order.OrderId</td>
+                        <td>@Order.UserId</td>
+                        <td>@Order.ProductId</td>
+                        <td>@Order.ProductName</td>
+                        <td>@Order.Quantity</td>
+                        <td>@Order.OrderDate</td>
                     </tr>
                 }
             </tbody>

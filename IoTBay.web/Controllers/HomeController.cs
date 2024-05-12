@@ -161,7 +161,9 @@ public class HomeController : Controller
 
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("OrderSubmission.cshtml"); // Redirect to a relevant page after order submission
+
+                // Redirect to OrderList action after successfully saving the order
+                return RedirectToAction("OrderList");
             }
             else
             {
@@ -169,7 +171,8 @@ public class HomeController : Controller
                 ModelState.AddModelError(string.Empty, "Invalid user ID format.");
             }
         }
-        return View(order);
+        // If ModelState is invalid or there was an error, return to the OrderManagement view
+        return RedirectToAction("Index");
     }
 
 }
