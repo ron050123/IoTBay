@@ -31,6 +31,9 @@ public class PaymentController : Controller
         List<string> paymentMethods = new List<string> { "Visa", "MasterCard", "PayPal", "Bank Transfer/Cheque", "Cash on Pickup", "Apple Pay" };
         ViewBag.PaymentMethods = new SelectList(paymentMethods);
         
+        List<string> status = new List<string> { "Complete", "Pending", "Cancelled" };
+        ViewBag.Status = new SelectList(status);
+        
         Payment payment = new Payment
         {
             UserId = 1,
@@ -48,6 +51,9 @@ public class PaymentController : Controller
     {
         List<string> paymentMethods = new List<string> { "Visa", "MasterCard", "PayPal", "Bank Transfer/Cheque", "Cash on Pickup", "Apple Pay" };
         ViewBag.PaymentMethods = new SelectList(paymentMethods);
+        
+        List<string> status = new List<string> { "Complete", "Pending", "Cancelled" };
+        ViewBag.Status = new SelectList(status);
 
         payment.User = payment.UserId != 0 ? _context.Usrs.Find(payment.UserId) : null;
 
@@ -89,6 +95,9 @@ public class PaymentController : Controller
         List<string> paymentMethods = new List<string> { "Visa", "MasterCard", "PayPal", "Bank Transfer/Cheque", "Cash on Pickup", "Apple Pay" };
         ViewBag.PaymentMethods = new SelectList(paymentMethods);
         
+        List<string> status = new List<string> { "Complete", "Pending", "Cancelled" };
+        ViewBag.Status = new SelectList(status);
+        
         if (id == null)
         {
             return NotFound();
@@ -111,6 +120,9 @@ public class PaymentController : Controller
     {
         List<string> paymentMethods = new List<string> { "Visa", "MasterCard", "PayPal", "Bank Transfer/Cheque", "Cash on Pickup", "Apple Pay" };
         ViewBag.PaymentMethods = new SelectList(paymentMethods);
+        
+        List<string> status = new List<string> { "Complete", "Pending", "Cancelled" };
+        ViewBag.Status = new SelectList(status);
         
         if (id != payment.PaymentId)
         {
