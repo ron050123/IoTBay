@@ -1,0 +1,60 @@
+@model List<IoTBay.web.ViewModels.OrderListViewModel>
+
+@{
+    ViewData["Title"] = "List of Orders";
+}
+
+<h1>Order List</h1>
+
+<form asp-action="OrderList" asp-controller="Order" method="get">
+    <p>
+        <label for="searchString">Search:</label>
+        <input type="text" id="searchString" name="searchString">
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date & Time</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>User ID</th>
+            <th>Quantity</th>
+            <th>Action</th>
+            <th>Cancel</th>
+            <th>Order ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            @if (order.OrderDetails != null)
+            {
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    <tr>
+                        <td>@order.OrderDate</td>
+                        <td>@orderDetail.ProductName</td>
+                        <td>@(orderDetail.Price * order.Quantity)</td>
+                        <td>@order.UserId</td>
+                        <td>@order.Quantity</td>
+                        <td>
+                            <a asp-controller="Order" asp-action="Edit" asp-route-id="@order.OrderId">Edit</a>
+                        </td>
+                        <td>
+                            <form asp-controller="Order" asp-action="Cancel" method="post">
+                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                <button type="submit" class="btn btn-danger">Cancel</button>
+                            </form>
+                        </td>
+                        <td>@order.OrderId</td>
+                    </tr>
+                }
+            }
+        }
+
+    </tbody>
+</table>
+

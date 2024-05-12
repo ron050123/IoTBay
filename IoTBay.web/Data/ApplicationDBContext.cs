@@ -12,6 +12,7 @@ public class ApplicationDBContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<Payment> Payment { get; set; }
     
+    public DbSet<OrderDetail> OrderDetails { get; set; }
 
     public DbSet<AccessLog> AccessLogs { get; set; }
 
@@ -27,4 +28,12 @@ public class ApplicationDBContext : DbContext
             optionsBuilder.UseSqlite("Data Source=IotBayDatabase.db");
         }
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail");
+        }
 }
