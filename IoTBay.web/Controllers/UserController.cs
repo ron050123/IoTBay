@@ -74,27 +74,44 @@ public class UserController : Controller
 	[HttpGet]
 	public IActionResult Create()
 	{
-		return View(); // Return the empty form
+		// Initialize a new user with default values
+		var newUser = new Usr
+		{
+			IsActive = true, // Default as active
+			EmailConfirmed = false, // Default as not confirmed
+		};
+		return View(newUser);
 	}
 
 	[HttpPost]
-	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Create(Usr user)
+	public IActionResult Create(Usr model)
 	{
-		if (ModelState.IsValid)
+		var user = new Usr
 		{
-			_context.Usrs.Add(user);
-			await _context.SaveChangesAsync();
-			return RedirectToAction("Index");  
+			Email = model.Email,
+			Password = "",
+			Role = "Customer",
+			Phone = "",
+			Name = model.Name,
+			Address = model.Address,
+			Type = model.Type,
+			IsActive = true,
+			EmailConfirmed = false
+		};
+		user.GenerateVerificationCode();
+            
+		try
+		{
+			_context.Add(user);
+			_context.SaveChangesAsync();
+			return RedirectToAction("Index");
 		}
-		return View(user); 
+		catch(Exception ex)
+		{
+			return View("~/Views/User/Create.cshtml", user);
+		}
 	}
 
-	
-	private bool UserExists(string email)
-	{
-		return _context.Usrs.Any(e => e.Email == email);
-	}
 
 	[HttpPost]
 	public async Task<IActionResult> Delete(int id)
