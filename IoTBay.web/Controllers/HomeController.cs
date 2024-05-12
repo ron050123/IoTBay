@@ -112,7 +112,8 @@ public class HomeController : Controller
         {
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim("Id", user.UserId.ToString()) 
+            new Claim("Id", user.UserId.ToString()) ,
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var identity = new ClaimsIdentity(claims, "CookieAuth");
