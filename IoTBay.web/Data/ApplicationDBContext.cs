@@ -28,4 +28,12 @@ public class ApplicationDBContext : DbContext
             optionsBuilder.UseSqlite("Data Source=IotBayDatabase.db");
         }
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Order>().ToTable("Order");
+            modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail");
+        }
 }

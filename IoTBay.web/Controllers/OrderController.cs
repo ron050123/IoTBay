@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using IoTBay.web.ViewModels;
 
 namespace IoTBay.web.Controllers
 {
@@ -25,10 +26,9 @@ namespace IoTBay.web.Controllers
         // GET: /OrderList/Index
         public IActionResult OrderList()
         {
-            // Join Order and OrderDetails to fetch combined data
             var orders = _context.OrderDetails
-                .Include(od => od.Order)  // Include Order to access Order properties
-                .Select(od => new
+                .Include(od => od.Order)
+                .Select(od => new OrderListViewModel
                 {
                     OrderId = od.OrderId,
                     OrderDate = od.Order.OrderDate,
