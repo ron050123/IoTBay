@@ -18,40 +18,21 @@ namespace IoTBay.web.Controllers
             _context = context;
         }
 
-        public IActionResult Index(string searchString, DateTime? searchDate, int? searchOrderId)
+        public IActionResult Index()
         {
-            IQueryable<Order> orders = _context.Orders;
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                orders = orders.Where(o => o.UserId.ToString().Contains(searchString));
-            }
-
-            if (searchDate.HasValue)
-            {
-                orders = orders.Where(o => o.OrderDate.Date == searchDate.Value.Date);
-            }
-
-            if (searchOrderId.HasValue)
-            {
-                orders = orders.Where(o => o.OrderId == searchOrderId.Value);
-            }
-
-            orders = orders.Include(o => o.OrderDetails);
-
-            return View(orders.ToList());
+            return View();
         }
 
         // GET: /OrderList/Index
-        public IActionResult OrderList()
+        public IActionResult OrderList(string searchString)
         {
-            var orders = _context.OrderDetails
+            IQueryable<OrderListViewModel> ordersQuery = _context.OrderDetails
                 .Include(od => od.Order)
                 .Select(od => new OrderListViewModel
                 {
                     OrderId = od.OrderId,
                     OrderDate = od.Order.OrderDate,
-                    OrderDetails = new List<OrderDetailViewModel>  // Initialize OrderDetails
+                    OrderDetails = new List<OrderDetailViewModel>
                     {
                         new OrderDetailViewModel
                         {
@@ -61,9 +42,12 @@ namespace IoTBay.web.Controllers
                     },
                     UserId = od.Order.UserId,
                     Quantity = od.Quantity
-                })
-                .ToList();
-        
+                });
+
+            ordersQuery = ApplySearchFilter(ordersQuery, searchString);
+
+            var orders = ordersQuery.ToList();
+
             return View("_OrderList", orders);
         }
 
@@ -108,14 +92,16 @@ namespace IoTBay.web.Controllers
         public IActionResult Edit(int id)
         {
             var order = _context.Orders
-                .Include(o => o.OrderDetails)
-                .ThenInclude(od => od.Product)
-                .FirstOrDefault(o => o.OrderId == id);
+            .Include(o => o.OrderDetails)
+            .ThenInclude(od => od.Product)
+            .FirstOrDefault(o => o.OrderId == id);
 
             if (order == null)
             {
                 return NotFound();
             }
+
+            ViewBag.AllProducts = _context.Products.ToList();
 
             // Pass the order to the Edit view for editing
             return View(order);
@@ -127,12 +113,12 @@ namespace IoTBay.web.Controllers
             var order = _context.Orders
                 .Include(o => o.OrderDetails)
                 .FirstOrDefault(o => o.OrderId == orderId);
-
+        
             if (order == null)
             {
                 return NotFound();
             }
-
+        
             // Update the OrderDetail for the specified product (assuming one product per order for simplicity)
             var orderDetail = order.OrderDetails.FirstOrDefault();
             if (orderDetail != null)
@@ -141,8 +127,24 @@ namespace IoTBay.web.Controllers
                 orderDetail.Quantity = quantity;
                 _context.SaveChanges();
             }
-
+        
             return RedirectToAction("OrderList");
+        }
+
+        private IQueryable<OrderListViewModel> ApplySearchFilter(IQueryable<OrderListViewModel> orders, string searchString)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                orders = orders.Where(o =>
+                    o.UserId.ToString().Contains(searchString) ||
+                    o.OrderDate.ToString().Contains(searchString) ||
+                    o.OrderDetails.Any(od =>
+                        od.ProductName.Contains(searchString) ||
+                        od.Price.ToString().Contains(searchString)
+                    )
+                );
+            }
+            return orders;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 @using (Html.BeginForm("SubmitOrder", "Order", FormMethod.Post))
 {
+    ViewData["Title"] = "Place Order";
     <div class="form-group">
         <label for="productId">Product:</label>
         <select class="form-control" id="productId" name="productId">
