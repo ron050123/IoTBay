@@ -1,7 +1,18 @@
 ﻿@model IEnumerable<IoTBay.web.Models.Entities.Product>
 
-<div  class="py-lg-5">
-Index Page
+<div class="py-lg-5">
+    
+    <div>
+        <label style="font-size: 24px; font-weight: bold;">Welcome</label>
+    </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div>
+            <label>Manage Customers:</label>
+        </div>
+        <a asp-controller="Customer" asp-action="Index" class="btn btn-primary">Go to Customer Manager</a>
+    }
 </div>
 @*<table class="table">
     <thead>

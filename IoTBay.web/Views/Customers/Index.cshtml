@@ -1,0 +1,67 @@
+@model IEnumerable<IoTBay.web.Models.Entities.Usr>
+
+@{
+    ViewData["Title"] = "IoT Customers";
+}
+
+<div style="padding-top: 20px; padding-bottom:  20px;">
+    <h2>IoT Customer Records</h2>
+</div>
+
+<div style="padding-bottom: 20px;">
+    <p>
+        <a asp-controller="Customer" asp-action="Create" class="btn btn-primary">Create New Customer</a>
+    </p>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label>Search:</label>
+        <input class="form-control mb-2 mr-sm-2" placeholder="Customer Name" type="text" name="searchName" id="searchInput" value="@ViewData["searchName"]"/>
+    </div>
+    <div class="col-md-6">
+        <label for="type">Type:</label>
+        <select id="type" class="form-control">
+            <option value="All">All</option>
+            <option value="Individual">Individual</option>
+            <option value="Company">Company</option>
+        </select>
+    </div>
+</div>
+
+<div id="Customer">
+</div>
+
+<script>  
+    $(document).ready(function() {
+        getCustomers("", "All");
+        
+        $('#searchInput').on('input', function() {
+            let search = $(this).val();
+            let type = $('#type').val();
+            getCustomers(search, type);
+        });
+        
+         $('#type').on('change', function() {
+                let type = $(this).val();
+                let search = $('#searchInput').val();
+                getCustomers(search, type);
+            });
+        
+    });
+    
+    function getCustomers(search, type) {
+        $.ajax({
+            url: "/Customer/GetCustomers/",
+            type: "GET",
+            dataType: "html",
+            data: { search: search, type: type },
+            success: function (data) {
+                $('#Customer').html(data);
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+</script>
