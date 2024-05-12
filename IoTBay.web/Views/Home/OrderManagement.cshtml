@@ -1,6 +1,6 @@
 @model IoTBay.web.Models.Entities.Order
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html>
 <head>
     <title>Place Order</title>
@@ -15,7 +15,12 @@
         <h1>Order Management</h1>
         <form asp-controller="Home" asp-action="OrderManagement" method="post">
             <label for="productName">Product Name:</label>
-            <input type="text" id="productName" name="productName" required>
+            <select id="productName" name="productName" required>
+                @foreach (var product in ViewBag.Products)
+                {
+                    <option value="@product.ProductId">@product.Name</option>
+                }
+            </select>
 
             <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" min="1" required>
