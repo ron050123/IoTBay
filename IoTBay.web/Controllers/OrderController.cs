@@ -26,6 +26,7 @@ namespace IoTBay.web.Controllers
         // GET: /OrderList/Index
         public IActionResult OrderList(string searchString)
         {
+
             IQueryable<OrderListViewModel> ordersQuery = _context.OrderDetails
                 .Include(od => od.Order)
                 .Where(od => od.Order.Status != "Canceled")
@@ -74,7 +75,6 @@ namespace IoTBay.web.Controllers
                 _context.Orders.Add(order);
                 _context.SaveChanges();
 
-                // Now create the associated OrderDetail for this Order
                 var orderDetail = new OrderDetail
                 {
                     OrderId = order.OrderId,
@@ -141,8 +141,20 @@ namespace IoTBay.web.Controllers
         }
 
         private IQueryable<OrderListViewModel> ApplySearchFilter(IQueryable<OrderListViewModel> orders, string searchString)
+{
+    if (!String.IsNullOrEmpty(searchString))
+    {
+        if (int.TryParse(searchString, out int orderId))
         {
-            if (!String.IsNullOrEmpty(searchString))
+            orders = orders.Where(o => o.OrderId == orderId);
+        }
+        else
+        {
+            if (DateTime.TryParse(searchString, out DateTime searchDate))
+            {
+                orders = orders.Where(o => o.OrderDate.Date == searchDate.Date);
+            }
+            else
             {
                 orders = orders.Where(o =>
                     o.UserId.ToString().Contains(searchString) ||
@@ -153,8 +165,10 @@ namespace IoTBay.web.Controllers
                     )
                 );
             }
-            return orders;
         }
+    }
+    return orders;
+}
 
         [HttpPost]
         public IActionResult Cancel(int orderId)
