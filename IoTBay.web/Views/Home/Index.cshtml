@@ -6,6 +6,8 @@
     var userId = User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
     
     <p>Logged in user id is @userId</p>
+
+    <a href="OrderManagement">Click here if you want to order an item!</a>
 }
 </div>
 @*<table class="table">
