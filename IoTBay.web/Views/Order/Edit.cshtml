@@ -1,0 +1,17 @@
+@model IoTBay.web.Models.Entities.Order
+
+<h1>Edit Order</h1>
+
+<form asp-controller="Order" asp-action="Update" method="post">
+    <div class="form-group">
+        <label for="orderDate">Order Date:</label>
+        <input type="text" id="orderDate" name="OrderDate" value="@Model.OrderDate" readonly />
+    </div>
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="Status" value="@Model.Status" />
+    </div>
+    <!-- Add other fields for editing as needed -->
+    <input type="hidden" asp-for="OrderId" />
+    <button type="submit" class="btn btn-primary">Update Order</button>
+</form>

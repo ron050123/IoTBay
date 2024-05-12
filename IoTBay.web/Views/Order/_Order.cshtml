@@ -1,0 +1,51 @@
+@model IoTBay.web.Models.Entities.Order
+
+@using (Html.BeginForm("SubmitOrder", "Order", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="productId">Product:</label>
+        <select class="form-control" id="productId" name="productId">
+            @foreach (var product in ViewBag.Products)
+            {
+                <option value="@product.ProductId">@product.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Order</button>
+}
+
+<script>
+    $(document).ready(function () {
+        $("#productId").change(function () {
+            var productId = $(this).val();
+            var products = @Html.Raw(Json.Serialize(ViewBag.Products));
+            var product = products.find(p => p.productId.toString() === productId);
+            if (product) {
+                $("#price").text(product.price.toFixed(2));
+                calculateTotal();
+            }
+        });
+
+        $("#quantity").change(calculateTotal);
+
+        function calculateTotal() {
+            var price = parseFloat($("#price").text());
+            var quantity = parseInt($("#quantity").val());
+            var total = price * quantity;
+            $("#total").text(total.toFixed(2));
+        }
+    });
+</script>
+
+<div class="form-group">
+    <label for="price">Price:</label>
+    <span id="price"></span>
+</div>
+<div class="form-group">
+    <label for="total">Total:</label>
+    <span id="total"></span>
+</div>

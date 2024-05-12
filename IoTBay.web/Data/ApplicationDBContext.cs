@@ -12,6 +12,7 @@ public class ApplicationDBContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<Payment> Payment { get; set; }
     
+    public DbSet<OrderDetail> OrderDetails { get; set; }
 
     public DbSet<AccessLog> AccessLogs { get; set; }
 
