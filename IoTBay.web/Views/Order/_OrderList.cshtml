@@ -1,4 +1,4 @@
-@model List<IoTBay.web.Models.Entities.Order>
+@model List<IoTBay.web.ViewModels.OrderListViewModel>
 
 <h1>Order List</h1>
 
@@ -20,10 +20,10 @@
             {
                 <tr>
                     <td>@order.OrderDate</td>
-                    <td>@orderDetail.Product.Name</td>
+                    <td>@orderDetail.ProductName</td>
                     <td>@orderDetail.Price</td>
                     <td>@order.UserId</td>
-                    <td>@orderDetail.Quantity</td>
+                    <td>@order.Quantity</td>
                     <td>
                         <a asp-controller="Order" asp-action="Edit" asp-route-id="@order.OrderId">Edit</a>
                     </td>
@@ -32,3 +32,4 @@
         }
     </tbody>
 </table>
+

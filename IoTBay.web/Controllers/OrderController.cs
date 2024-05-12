@@ -25,11 +25,18 @@ namespace IoTBay.web.Controllers
         // GET: /OrderList/Index
         public IActionResult OrderList()
         {
-            // Include related entities properly using Include and ThenInclude
-            var orders = _context.Orders
-                .Include(o => o.User)
-                .Include(o => o.OrderDetails)
-                    .ThenInclude(od => od.Product)
+            // Join Order and OrderDetails to fetch combined data
+            var orders = _context.OrderDetails
+                .Include(od => od.Order)  // Include Order to access Order properties
+                .Select(od => new
+                {
+                    OrderId = od.OrderId,
+                    OrderDate = od.Order.OrderDate,
+                    ProductName = od.Product.Name,
+                    Price = od.Price,
+                    UserId = od.Order.UserId,
+                    Quantity = od.Quantity
+                })
                 .ToList();
 
             return View("_OrderList", orders);
