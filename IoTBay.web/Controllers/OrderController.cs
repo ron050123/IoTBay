@@ -32,13 +32,19 @@ namespace IoTBay.web.Controllers
                 {
                     OrderId = od.OrderId,
                     OrderDate = od.Order.OrderDate,
-                    ProductName = od.Product.Name,
-                    Price = od.Price,
+                    OrderDetails = new List<OrderDetailViewModel>  // Initialize OrderDetails
+                    {
+                        new OrderDetailViewModel
+                        {
+                            ProductName = od.Product.Name,
+                            Price = od.Price
+                        }
+                    },
                     UserId = od.Order.UserId,
                     Quantity = od.Quantity
                 })
                 .ToList();
-
+        
             return View("_OrderList", orders);
         }
 

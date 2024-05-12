@@ -16,20 +16,24 @@
     <tbody>
         @foreach (var order in Model)
         {
-            foreach (var orderDetail in order.OrderDetails)
+            @if (order.OrderDetails != null)
             {
-                <tr>
-                    <td>@order.OrderDate</td>
-                    <td>@order.ProductName</td>
-                    <td>@order.Price</td>
-                    <td>@order.UserId</td>
-                    <td>@order.Quantity</td>
-                    <td>
-                        <a asp-controller="Order" asp-action="Edit" asp-route-id="@order.OrderId">Edit</a>
-                    </td>
-                </tr>
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    <tr>
+                        <td>@order.OrderDate</td>
+                        <td>@orderDetail.ProductName</td>
+                        <td>@orderDetail.Price</td>
+                        <td>@order.UserId</td>
+                        <td>@order.Quantity</td>
+                        <td>
+                            <a asp-controller="Order" asp-action="Edit" asp-route-id="@order.OrderId">Edit</a>
+                        </td>
+                    </tr>
+                }
             }
         }
+
     </tbody>
 </table>
 
