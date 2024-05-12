@@ -14,6 +14,14 @@ public class Usr
     public string Type { get; set; }
     public bool IsActive { get; set; }
     
+    public bool EmailConfirmed { get; set; } 
+    public string VerificationCode { get; set; }
+
+    
     public virtual ICollection<Order> Orders { get; set; }
     public virtual ICollection<Payment> Payments { get; set; }
+    
+    public void GenerateVerificationCode() {
+        this.VerificationCode = new Random().Next(100000, 999999).ToString();
+    }
 }

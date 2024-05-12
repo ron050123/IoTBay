@@ -9,7 +9,8 @@ public class ApplicationDBContext : DbContext
     
     public DbSet<Usr> Usrs { get; set; }
 
-    
+    public DbSet<AccessLog> AccessLogs { get; set; }
+
     public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
         : base(options)
     {
