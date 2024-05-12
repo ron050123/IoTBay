@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace IoTBay.web.Controllers;
 
@@ -132,6 +133,20 @@ public class HomeController : Controller
     }
 
     [Authorize]
+    [HttpGet]
+    public IActionResult OrderList()
+    {
+        return View();
+    }
+
+    [Authorize]
+    [HttpGet]
+    public IActionResult OrderSubmission()
+    {
+        return View();
+    }
+
+    [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> OrderManagement(Order order)
@@ -140,13 +155,13 @@ public class HomeController : Controller
         {
             // Associate the order with the logged-in user
             var userId = User.FindFirstValue("Id");
-            if (int.TryParse(userId, out int parsedUserId)) // Try parsing userId to int
+            if (int.TryParse(userId, out int parsedUserId))
             {
                 order.UserId = parsedUserId;
 
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index"); // Redirect to a relevant page after order submission
+                return RedirectToAction("OrderSubmission.cshtml"); // Redirect to a relevant page after order submission
             }
             else
             {
@@ -154,7 +169,7 @@ public class HomeController : Controller
                 ModelState.AddModelError(string.Empty, "Invalid user ID format.");
             }
         }
-    return View(order);
-}
+        return View(order);
+    }
 
 }

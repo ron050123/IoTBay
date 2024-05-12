@@ -7,7 +7,7 @@ namespace IoTBay.web.Data
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Usr> Usrs { get; set; }
-        public DbSet<Order> Orders { get; set; } // Add DbSet for Order entity
+        public DbSet<Order> Orders { get; set; }
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)

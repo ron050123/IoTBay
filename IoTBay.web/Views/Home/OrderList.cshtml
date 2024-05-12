@@ -1,0 +1,56 @@
+@model IEnumerable<IoTBay.web.Models.Entities.Order>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ordered Products</title>
+    <style>
+        .order-container {
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="order-container">
+        <h1>Ordered Products</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>User ID</th>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Delivery Address</th>
+                    <th>Order Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderId</td>
+                        <td>@order.UserId</td>
+                        <td>@order.ProductId</td>
+                        <td>@order.ProductName</td>
+                        <td>@order.Quantity</td>
+                        <td>@order.OrderDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

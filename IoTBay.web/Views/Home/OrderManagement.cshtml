@@ -1,4 +1,4 @@
-@model IoTBay.web.Models.Entities.Product
+@model IoTBay.web.Models.Entities.Order
 <!DOCTYPE html>
 
 <html>
@@ -13,7 +13,7 @@
 <body>
     <div class="order-container">
         <h1>Order Management</h1>
-        <form action="/Order/Submit" method="post">
+        <form asp-controller="Home" asp-action="OrderManagement" method="post">
             <label for="productName">Product Name:</label>
             <input type="text" id="productName" name="productName" required>
 
