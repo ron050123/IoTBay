@@ -13,7 +13,6 @@ public class Usr
     public string Address { get; set; }
     public string Type { get; set; }
     public bool IsActive { get; set; }
-    
     public bool EmailConfirmed { get; set; } 
     public string VerificationCode { get; set; }
 
