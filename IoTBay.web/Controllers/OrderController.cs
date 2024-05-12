@@ -18,9 +18,28 @@ namespace IoTBay.web.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString, DateTime? searchDate, int? searchOrderId)
         {
-            return View();
+            IQueryable<Order> orders = _context.Orders;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                orders = orders.Where(o => o.UserId.ToString().Contains(searchString));
+            }
+
+            if (searchDate.HasValue)
+            {
+                orders = orders.Where(o => o.OrderDate.Date == searchDate.Value.Date);
+            }
+
+            if (searchOrderId.HasValue)
+            {
+                orders = orders.Where(o => o.OrderId == searchOrderId.Value);
+            }
+
+            orders = orders.Include(o => o.OrderDetails);
+
+            return View(orders.ToList());
         }
 
         // GET: /OrderList/Index
@@ -103,18 +122,27 @@ namespace IoTBay.web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Order order)
+        public IActionResult Update(int orderId, int productId, int quantity)
         {
-            if (ModelState.IsValid)
+            var order = _context.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order == null)
             {
-                // Update the order in the database
-                _context.Orders.Update(order);
-                _context.SaveChanges();
-                return RedirectToAction("OrderList");
+                return NotFound();
             }
 
-            // If model state is invalid, return to the edit view with validation errors
-            return View("Edit", order);
+            // Update the OrderDetail for the specified product (assuming one product per order for simplicity)
+            var orderDetail = order.OrderDetails.FirstOrDefault();
+            if (orderDetail != null)
+            {
+                orderDetail.ProductId = productId;
+                orderDetail.Quantity = quantity;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("OrderList");
         }
     }
 }

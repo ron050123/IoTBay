@@ -4,12 +4,17 @@
 
 <form asp-controller="Order" asp-action="Update" method="post">
     <div class="form-group">
-        <label for="orderDate">Order Date:</label>
-        <input type="text" id="orderDate" name="OrderDate" value="@Model.OrderDate" readonly />
+        <label for="product">Product:</label>
+        <select class="form-control" id="product" name="ProductId">
+            @foreach (var orderDetail in Model.OrderDetails)
+            {
+                <option value="@orderDetail.Product.ProductId">@orderDetail.Product.Name</option>
+            }
+        </select>
     </div>
     <div class="form-group">
-        <label for="status">Status:</label>
-        <input type="text" id="status" name="Status" value="@Model.Status" />
+        <label for="quantity">Quantity:</label>
+        <input type="number" class="form-control" id="quantity" name="Quantity" value="@Model.OrderDetails.FirstOrDefault().Quantity" min="1" required />
     </div>
     <input type="hidden" asp-for="OrderId" />
     <button type="submit" class="btn btn-primary">Update Order</button>
