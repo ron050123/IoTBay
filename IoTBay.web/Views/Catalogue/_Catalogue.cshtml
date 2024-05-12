@@ -1,0 +1,123 @@
+﻿@model List<IoTBay.web.Models.Entities.Product>
+@using System.Security.Claims
+
+
+@{
+    var user = User as ClaimsPrincipal;
+    var role = user.FindFirstValue(ClaimTypes.Role);
+}
+
+<style>
+    .card-fixed-height {
+        height: 500px; 
+    }
+    .description-scroll {
+        height: 150px; 
+        overflow-y: auto; 
+    }
+</style>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div style="padding-left: 0px" class="col-4 mb-4 ">
+                <div class="card h-100 card-fixed-height">
+                    @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                    {
+                        <div style="padding: 20px">
+                            
+                        
+                        <div class="d-flex">
+                            <div class="my-auto">
+                                <p style="margin-left: 6px" class="my-0">Admin Panel:</p>
+                            </div>
+                            
+                            <button id="updateButton" data-toggle="modal" data-target="#updateModal" class="btn btn-warning mx-2" data-product-id="@product.ProductId">Update</button>
+                            <button id="deleteButton" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger" data-product-id="@product.ProductId" >Delete</button>
+                        </div>
+                        <hr />
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h3 class="card-title pb-4">@product.Name</h3>
+                        <div class="description-scroll">
+                            <p style="font-family: 'Comic Sans MS', cursive; color: grey;" class="card-text">@product.Description</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end mt-auto">
+                            <p style="font-weight: bold; font-size: 22px;" class="my-auto">$@product.Price</p>
+                            <button type="button" class="btn btn-success">Add</button>
+                        </div>
+                        <hr />
+                        <p class="mb-0">Supplier: UTS</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Product</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="updateModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title">Delete Product</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="deleteModalBody">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#updateButton').click(function () {
+            var productId = $(this).data('product-id');
+            $.ajax({
+                            url: "/Catalogue/UpdateProduct/",
+                            type:"GET",
+                            dataType: "html",
+                             data: { id: productId },
+                            success: function (data){
+                            $('#updateModalBody').html(data);
+                            },
+                            error: function(err) {
+                            alert('Error loading the update form');
+                            }
+            });
+    });
+    
+    $('#deleteButton').click(function () {
+                   var productId = $(this).data('product-id');
+                               $.ajax({
+                                               url: "/Catalogue/DeleteProduct/",
+                                               type:"GET",
+                                               dataType: "html",
+                                                data: { id: productId },
+                                               success: function (data){
+                                               $('#deleteModalBody').html(data);
+                                               },
+                                               error: function(err) {
+                                               alert('Error loading the delete form');
+                                               }
+                               });
+        });
+</script>

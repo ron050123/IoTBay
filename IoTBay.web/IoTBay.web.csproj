@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="MailKit" Version="4.5.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.1.24081.2">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -16,10 +17,15 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="MimeKit" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="Views\Home\Create.cshtml.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Migrations\" />
     </ItemGroup>
     
 

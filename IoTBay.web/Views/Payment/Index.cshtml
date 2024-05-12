@@ -1,0 +1,57 @@
+﻿@model IEnumerable<IoTBay.web.Models.Entities.Payment>
+
+@{
+    ViewData["Title"] = "Payments";
+}
+
+<h1>Payments</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-action="Index" method="get">
+    <p>
+        Search: <input type="text" name="searchString">
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+    <th>
+        @Html.DisplayNameFor(model => model.TransactionDate)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Amount)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.PaymentMethod)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Status)
+    </th>
+    <th></th>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionDate)
+            </td>
+            <td>
+                $@Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PaymentId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.PaymentId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

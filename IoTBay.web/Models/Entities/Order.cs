@@ -1,26 +1,17 @@
-using System;
+﻿namespace IoTBay.web.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace IoTBay.web.Models.Entities;
+public class Order
+{
+    [Key]
+    public int OrderId { get; set; }
+    public DateTime OrderDate { get; set; }
+    public string Status { get; set; }
 
-public class Order {
-        
-        public int OrderId { get; set; }
+    public int UserId { get; set; }
+    [ForeignKey("UserId")]
+    public virtual Usr User { get; set; }
 
-        public int UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public Usr User { get; set; }
-
-        public Guid ProductId { get; set; } // Changed to Guid to match Product.Id
-
-        public string ProductName { get; set; }
-
-        public int Quantity { get; set; }
-
-        public DateTime OrderDate { get; set; }
-
-        // Navigation property for the product associated with the order
-        public Product Product { get; set; }
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 }
