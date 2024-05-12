@@ -28,6 +28,7 @@ namespace IoTBay.web.Controllers
         {
             IQueryable<OrderListViewModel> ordersQuery = _context.OrderDetails
                 .Include(od => od.Order)
+                .Where(od => od.Order.Status != "Canceled")
                 .Select(od => new OrderListViewModel
                 {
                     OrderId = od.OrderId,
@@ -113,21 +114,29 @@ namespace IoTBay.web.Controllers
             var order = _context.Orders
                 .Include(o => o.OrderDetails)
                 .FirstOrDefault(o => o.OrderId == orderId);
-        
+
             if (order == null)
             {
                 return NotFound();
             }
-        
-            // Update the OrderDetail for the specified product (assuming one product per order for simplicity)
+
+            // Update the OrderDetail for the specified product
             var orderDetail = order.OrderDetails.FirstOrDefault();
             if (orderDetail != null)
             {
                 orderDetail.ProductId = productId;
                 orderDetail.Quantity = quantity;
+
+                // Update the price based on the selected product
+                var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+                if (product != null)
+                {
+                    orderDetail.Price = product.Price;
+                }
+
                 _context.SaveChanges();
             }
-        
+
             return RedirectToAction("OrderList");
         }
 
@@ -146,5 +155,24 @@ namespace IoTBay.web.Controllers
             }
             return orders;
         }
+
+        [HttpPost]
+        public IActionResult Cancel(int orderId)
+        {
+            var order = _context.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefault(o => o.OrderId == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            order.Status = "Canceled";
+            _context.SaveChanges();
+
+            return RedirectToAction("OrderList");
+        }
+
     }
 }

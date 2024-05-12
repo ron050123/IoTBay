@@ -23,6 +23,7 @@
             <th>User ID</th>
             <th>Quantity</th>
             <th>Action</th>
+            <th>Cancel</th>
             <th>Order ID</th>
         </tr>
     </thead>
@@ -41,6 +42,12 @@
                         <td>@order.Quantity</td>
                         <td>
                             <a asp-controller="Order" asp-action="Edit" asp-route-id="@order.OrderId">Edit</a>
+                        </td>
+                        <td>
+                            <form asp-controller="Order" asp-action="Cancel" method="post">
+                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                <button type="submit" class="btn btn-danger">Cancel</button>
+                            </form>
                         </td>
                         <td>@order.OrderId</td>
                     </tr>

@@ -3,19 +3,28 @@
 <h1>Edit Order</h1>
 
 <form asp-controller="Order" asp-action="Update" method="post">
+    <!-- Other form elements for editing -->
     <div class="form-group">
-        <label for="product">Product:</label>
-        <select class="form-control" id="product" name="ProductId">
-        @foreach (var product in ViewBag.AllProducts)
-        {
-            <option value="@product.ProductId">@product.Name</option>
-        }
-</select>
+        <label for="productId">Product:</label>
+        <select class="form-control" id="productId" name="ProductId">
+            @foreach (var product in ViewBag.AllProducts)
+            {
+                <option value="@product.ProductId" data-price="@product.Price">@product.Name</option>
+            }
+        </select>
     </div>
     <div class="form-group">
-        <label for="quantity">Quantity:</label>
-        <input type="number" class="form-control" id="quantity" name="Quantity" value="@Model.OrderDetails.FirstOrDefault().Quantity" min="1" required />
+        <label for="price">Price:</label>
+        <span id="price">@Model.OrderDetails.FirstOrDefault()?.Price.ToString("0.00")</span>
     </div>
-    <input type="hidden" asp-for="OrderId" />
-    <button type="submit" class="btn btn-primary">Update Order</button>
+    <!-- Other form elements and submit button -->
 </form>
+
+<script>
+    $(document).ready(function () {
+        $("#productId").change(function () {
+            var price = $(this).find(":selected").data("price");
+            $("#price").text(price.toFixed(2));
+        });
+    });
+</script>
