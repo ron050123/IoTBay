@@ -41,7 +41,7 @@ public class UserController : Controller
 	public async Task<IActionResult> SaveChanges([FromBody] Usr user)
 	{
 		if (user.Name != null && user.Password != null
-			&& user.Email != null && user.Phone != null && user.Role != null)
+		                      && user.Email != null && user.Phone != null && user.Role != null)
 		{
 			if (user.UserId == 0 || user.UserId == null)
 			{
@@ -60,6 +60,7 @@ public class UserController : Controller
 				existingUser.Email = user.Email;
 				existingUser.Password = user.Password;
 				existingUser.Role = user.Role;
+				existingUser.IsActive = user.IsActive;
 
 				// Attempt to update the user
 				_context.Usrs.Update(existingUser);
@@ -70,10 +71,47 @@ public class UserController : Controller
 		return BadRequest("Invalid data. Fill all fields"); // Return bad request if model state is invalid
 	}
 
-	private bool UserExists(string email)
+	[HttpGet]
+	public IActionResult Create()
 	{
-		return _context.Usrs.Any(e => e.Email == email);
+		// Initialize a new user with default values
+		var newUser = new Usr
+		{
+			IsActive = true, // Default as active
+			EmailConfirmed = false, // Default as not confirmed
+		};
+		return View(newUser);
 	}
+
+	[HttpPost]
+	public IActionResult Create(Usr model)
+	{
+		var user = new Usr
+		{
+			Email = model.Email,
+			Password = "",
+			Role = "Customer",
+			Phone = "",
+			Name = model.Name,
+			Address = model.Address,
+			Type = model.Type,
+			IsActive = true,
+			EmailConfirmed = false
+		};
+		user.GenerateVerificationCode();
+            
+		try
+		{
+			_context.Add(user);
+			_context.SaveChangesAsync();
+			return RedirectToAction("Index");
+		}
+		catch(Exception ex)
+		{
+			return View("~/Views/User/Create.cshtml", user);
+		}
+	}
+
 
 	[HttpPost]
 	public async Task<IActionResult> Delete(int id)
@@ -100,7 +138,22 @@ public class UserController : Controller
 			return BadRequest(ex.Message);
 		}
 	}
+	
+	[HttpPost]
+	public async Task<IActionResult> ToggleStatus(int id)
+	{
+		var user = await _context.Usrs.FindAsync(id);
+		if (user == null)
+		{
+			return NotFound("User not found.");
+		}
 
+		user.IsActive = !user.IsActive;  
+		_context.Usrs.Update(user);       
+		await _context.SaveChangesAsync();
+		return Ok(user.IsActive ? "User activated." : "User deactivated.");
+	}
+	
 	[HttpGet]
 	public IActionResult GetUsers()
 	{

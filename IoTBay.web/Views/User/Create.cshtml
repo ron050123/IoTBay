@@ -1,0 +1,70 @@
+﻿@model IoTBay.web.Models.Entities.Usr
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" type="email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone">Phone</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password">Password</label>
+        <input type="password" asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Role">Role</label>
+        <select asp-for="Role" class="form-control">
+            <option value="">Select a role</option>
+            <option value="Customer">Customer</option>
+            <option value="Staff">Staff</option>
+            <option value="Admin">Admin</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Type">Type</label>
+        <select asp-for="Type" class="form-control">
+            <option value="Type1">Type1</option>
+            <option value="Type2">Type2</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address">Address</label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" asp-for="IsActive" />
+        <label class="form-check-label" asp-for="IsActive">Is Active</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create User</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
