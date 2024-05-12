@@ -41,7 +41,7 @@ public class UserController : Controller
 	public async Task<IActionResult> SaveChanges([FromBody] Usr user)
 	{
 		if (user.Name != null && user.Password != null
-			&& user.Email != null && user.Phone != null && user.Role != null)
+		                      && user.Email != null && user.Phone != null && user.Role != null)
 		{
 			if (user.UserId == 0 || user.UserId == null)
 			{
@@ -60,6 +60,7 @@ public class UserController : Controller
 				existingUser.Email = user.Email;
 				existingUser.Password = user.Password;
 				existingUser.Role = user.Role;
+				existingUser.IsActive = user.IsActive;
 
 				// Attempt to update the user
 				_context.Usrs.Update(existingUser);
@@ -70,6 +71,26 @@ public class UserController : Controller
 		return BadRequest("Invalid data. Fill all fields"); // Return bad request if model state is invalid
 	}
 
+	[HttpGet]
+	public IActionResult Create()
+	{
+		return View(); // Return the empty form
+	}
+
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> Create(Usr user)
+	{
+		if (ModelState.IsValid)
+		{
+			_context.Usrs.Add(user);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Index");  
+		}
+		return View(user); 
+	}
+
+	
 	private bool UserExists(string email)
 	{
 		return _context.Usrs.Any(e => e.Email == email);
@@ -100,7 +121,22 @@ public class UserController : Controller
 			return BadRequest(ex.Message);
 		}
 	}
+	
+	[HttpPost]
+	public async Task<IActionResult> ToggleStatus(int id)
+	{
+		var user = await _context.Usrs.FindAsync(id);
+		if (user == null)
+		{
+			return NotFound("User not found.");
+		}
 
+		user.IsActive = !user.IsActive;  
+		_context.Usrs.Update(user);       
+		await _context.SaveChangesAsync();
+		return Ok(user.IsActive ? "User activated." : "User deactivated.");
+	}
+	
 	[HttpGet]
 	public IActionResult GetUsers()
 	{

@@ -92,11 +92,13 @@
 			</div>
 			<div class="col-md-4">
 				<div class="form-group">
-					<select asp-for="IsActive" class="form-control">
-						<option value=true>Active</option>
-						<option value=false>InActive</option>
-					</select>
-				</div>
+                    <label for="IsActive"><b>Status:</b></label>
+                    <select asp-for="IsActive" class="form-control" id="IsActive">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+
 			</div>
 		</div>
 
@@ -106,36 +108,29 @@
 
 <script>
 	function saveChanges() {
-		// Gather form data
+        var formData = {
+            UserId: $('#UserId').val(),
+            Name: $('#Name').val(),
+            Email: $('#Email').val(),
+            Phone: $('#Phone').val(),
+            Password: $('#Password').val(),
+            Role: $('#Role').val(),
+            IsActive: $('#IsActive').find(":selected").val() === "true"
+        };
+    
+        $.ajax({
+            url: '/User/SaveChanges',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                alert(response);
+                window.location.reload();  // Reload to see changes
+            },
+            error: function (error) {
+                alert('Error: ' + JSON.stringify(error));
+            }
+        });
+    }
 
-		var formData = {
-			Name: $('#Name').val(),
-			Role: $('#Role').val(),
-			Email: $('#Email').val(),
-			Password: $('#Password').val(),
-			Phone: $('#Phone').val(),
-			UserId: $('#UserId').val(),
-			Status: $('#Status').val()
-		};
-
-		// Send AJAX request
-		$.ajax({
-			url: '/User/SaveChanges', // Update with your controller and action names
-			type: 'POST',
-			contentType: 'application/json',
-			data: JSON.stringify(formData),
-			success: function (data) {
-				// Handle success response
-				console.log(data);
-				alert(data);
-				// Reload the main ticket page
-				window.open('@Url.Action("Index", "User")', "_self")
-			},
-			error: function (error) {
-				// Handle error response
-				console.error(error);
-				alert(error.responseText);
-			}
-		});
-	}
 </script>
