@@ -125,35 +125,35 @@ public class HomeController : Controller
     }
 
     [Authorize]
-        [HttpGet]
-        public IActionResult OrderManagement()
-        {
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OrderManagement(Order order)
-{
-    if (ModelState.IsValid)
+    [HttpGet]
+    public IActionResult OrderManagement()
     {
-        // Associate the order with the logged-in user
-        var userId = User.FindFirstValue("Id");
-        if (int.TryParse(userId, out int parsedUserId)) // Try parsing userId to int
-        {
-            order.UserId = parsedUserId;
-
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index"); // Redirect to a relevant page after order submission
-        }
-        else
-        {
-            // Handle the case where userId cannot be parsed to int
-            ModelState.AddModelError(string.Empty, "Invalid user ID format.");
-        }
+        return View();
     }
+
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> OrderManagement(Order order)
+    {
+        if (ModelState.IsValid)
+        {
+            // Associate the order with the logged-in user
+            var userId = User.FindFirstValue("Id");
+            if (int.TryParse(userId, out int parsedUserId)) // Try parsing userId to int
+            {
+                order.UserId = parsedUserId;
+
+                _context.Orders.Add(order);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index"); // Redirect to a relevant page after order submission
+            }
+            else
+            {
+                // Handle the case where userId cannot be parsed to int
+                ModelState.AddModelError(string.Empty, "Invalid user ID format.");
+            }
+        }
     return View(order);
 }
 
